@@ -1,0 +1,8 @@
+selenium
+beautifulsoup4
+chromedriver-binary
+requests
+numpy
+tqdm
+pandas
+pytest

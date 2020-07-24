@@ -1,0 +1,8 @@
+__pycache__
+.pytest_cache
+.coverage
+*.json
+*.csv
+*.log
+!database/*.csv
+!database/*.json

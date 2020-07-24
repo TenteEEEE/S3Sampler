@@ -21,7 +21,7 @@ class scoresaber_scraper:
         options.add_argument('--window-size=640,480')
         if headless:
             options.add_argument('--headless')
-        if os.name is not 'nt':
+        if os.name != 'nt':
             # On Linux case, you may need to install chromedriver manually
             self.driver = webdriver.Chrome('/usr/local/bin/chromedriver', options=options)
         else:

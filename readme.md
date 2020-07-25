@@ -22,6 +22,11 @@ If you want to get a perfect(unranked and ranked) song database,
 
 ## Options
 ```python src/scraping.py [-h|--help]``` : See the help menu  
+```python src/scraping.py [-r|--restart]``` : Restart from temporary files   
 ```python src/scraping.py [-u|--unranked]``` : Sample unranked songs too   
 ```python src/scraping.py [-i|--interval] number``` : Sampling interval second (minimum is 1.5 sec).  
 ```python src/scraping.py [-v|--view]``` : Disable headless mode(almost for debugging)  
+
+## Log
+2020/07/25: Support Beatsaver information sampling
+2020/07/24: Initial commit, and started daily updating

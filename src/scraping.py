@@ -13,6 +13,7 @@ import chromedriver_binary
 import numpy as np
 import pandas as pd
 
+
 class scoresaber_scraper:
     def __init__(self, interval=5, unranked=False, headless=True, restart=False):
         self.baseurl = 'https://scoresaber.com'
@@ -29,7 +30,7 @@ class scoresaber_scraper:
         self.restart = restart
         if self.restart:
             try:
-                with open('./tmp/'+os.listdir('tmp')[0]) as f:
+                with open('./tmp/' + os.listdir('tmp')[0]) as f:
                     self.song_database = json.load(f)
                 self.previous = int(os.listdir('tmp')[0][:4])
             except:
@@ -43,7 +44,6 @@ class scoresaber_scraper:
         soup = self.cook_songlist_page()
         links = self.extract_links(soup)
         self.pages = self.find_num_pages(links)
-        
 
     def __del__(self):
         self.driver.quit()
@@ -122,7 +122,7 @@ class scoresaber_scraper:
         monos = []
         maxretry = 3
         counter = 0
-        while len(monos) < 1 and counter < maxretry: # sometimes it fails so
+        while len(monos) < 1 and counter < maxretry:  # sometimes it fails so
             self.driver.get(f'https://beatsaver.com/search?q={id}')
             time.sleep(self.intervalf())
             soup = BeautifulSoup(self.driver.page_source, 'html.parser')

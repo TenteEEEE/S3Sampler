@@ -1,8 +1,14 @@
 # ScoreSaber Song Sampler (S3Sampler)
 Lives are long. Suddenly, we are faced with unexpected things. Sometimes we need a bunch of panties. Sometimes we need thousand of GPUs. Here is a kind of these things. I just wanted to know a latest ranked song database for... something.  
 
+## Auto-Genned Google Sheets
+You can check the data from [ScoreSaberRankedSongDB](https://docs.google.com/spreadsheets/d/1NZpCVfejZgJBtrJL0AukMz4KODm_MKKEPhxN9CR34BE/edit?usp=sharing).  
+You have a viewer permission only, but you can sort the data from filtering icon->"Make a temporary filtered view".  
+![img](https://user-images.githubusercontent.com/9051681/88448983-39d9d600-ce7e-11ea-80b9-1068d3f518b0.png)
+
+
 ## Usage
-**Probably, you do not need to use it by yourself** because you can check the latest database(ranked song only) from [here](./database/).
+**Probably, you do not need to use it by yourself** because you can check the latest database(ranked song only) from [the above sheet](https://docs.google.com/spreadsheets/d/1NZpCVfejZgJBtrJL0AukMz4KODm_MKKEPhxN9CR34BE/edit?usp=sharing) or [here](./database/).
 
 Anyway, when you want to make it by yourself,  
 ```python src/scraping.py```  

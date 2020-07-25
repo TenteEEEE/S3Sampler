@@ -7,3 +7,4 @@ __pycache__
 !database/*.csv
 !database/*.json
 update.sh
+tmp

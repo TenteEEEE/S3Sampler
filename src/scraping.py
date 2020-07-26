@@ -28,6 +28,7 @@ class scoresaber_scraper:
             self.driver = webdriver.Chrome(options=options)
         self.unranked = unranked
         self.restart = restart
+        self.previous = 0
         if self.restart:
             try:
                 with open('./tmp/' + os.listdir('tmp')[0]) as f:
@@ -35,7 +36,6 @@ class scoresaber_scraper:
                 self.previous = int(os.listdir('tmp')[0][:4])
             except:
                 self.song_database = {}
-                self.previous = 0
         if interval <= 1.5:
             print('Interval must be bigger than 0.5, so it set to 5.')
             interval = 5

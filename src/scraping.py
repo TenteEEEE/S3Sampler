@@ -198,12 +198,33 @@ def setup():
     return args
 
 
+def check_new_songs(scraper):
+    try:
+        with open('database/song_db.json', 'r') as f:
+            before = set(json.load(f).keys())
+    except:
+        return None
+    after = set(scraper.song_database.keys())
+    return list(after - before)
+
+
 def main():
     args = setup()
     os.makedirs('./tmp', exist_ok=True)
     os.makedirs('./database', exist_ok=True)
     scraper = scoresaber_scraper(interval=args.interval, unranked=args.unranked, headless=not(args.view), restart=args.restart)
     scraper.scrape()
+    # Print new songs if it exists
+    new_songs = check_new_songs(scraper)
+    if len(new_songs) > 0:
+        print('New songs have been detected!')
+        for s in new_songs:
+            print(s)
+        try:
+            with open('./database/newsongs', 'w') as f:
+                f.write(', '.join(new_songs))
+    else:
+        print("No new songs.")
     # Original json database
     with open('./database/song_db.json', 'w') as f:
         json.dump(scraper.song_database, f)

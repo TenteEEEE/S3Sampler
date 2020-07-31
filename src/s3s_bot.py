@@ -14,6 +14,7 @@ class twitter:
             self.db = json.load(f)
         time.sleep(5)
         self.commit_msg = self.get_commit_msg()
+        print(self.commit_msg)
         self.debug = debug
 
     def tweet(self, msg):
@@ -37,7 +38,10 @@ class twitter:
 
     def find_songs(self, msg):
         date = re.search(r'[0-9]{8}', msg)
-        msg = msg[date.span()[-1] + 2:]
+        try:
+            msg = msg[date.span()[-1] + 2:]
+        except:
+            return None
         songs = msg.split(', ')
         if songs[0] != '':
             return songs

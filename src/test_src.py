@@ -1,5 +1,5 @@
 import pytest
-from src.scraping import scoresaber_scraper
+from scraping import scoresaber_scraper
 
 
 def test_scraper_init():

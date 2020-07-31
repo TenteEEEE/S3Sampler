@@ -28,6 +28,7 @@ If you want to get a perfect(unranked and ranked) song database,
 ```python src/scraping.py [-v|--view]``` : Disable headless mode(almost for debugging)  
 
 ## Log
+2020/07/31: Support Twitter Notification Bot  
 2020/07/29: It prints new songs if it exists  
 2020/07/25: Support Beatsaver information sampling  
 2020/07/24: Initial commit, and started daily updating

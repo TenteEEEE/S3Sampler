@@ -2,6 +2,7 @@ selenium
 beautifulsoup4
 chromedriver-binary
 requests
+requests-oauthlib
 numpy
 tqdm
 pandas

@@ -39,7 +39,7 @@ class twitter:
     def find_songs(self, msg):
         date = re.search(r'[0-9]{8}', msg)
         try:
-            msg = msg[date.span()[-1] + 2:]
+            msg = msg[date.span()[-1] + 6:]
         except:
             return None
         songs = msg.split(', ')
@@ -52,7 +52,7 @@ class twitter:
         return f"New Ranked Song! {song['Title']} https://beatsaver.com/beatmap/{song['Key']} #NewRankedSong"
 
     def notify(self):
-        self.tweet("Ranked Song Database has been updated: https://docs.google.com/spreadsheets/d/1NZpCVfejZgJBtrJL0AukMz4KODm_MKKEPhxN9CR34BE/edit?usp=sharing")
+        #self.tweet("Ranked Song Database has been updated: https://docs.google.com/spreadsheets/d/1NZpCVfejZgJBtrJL0AukMz4KODm_MKKEPhxN9CR34BE/edit?usp=sharing")
         songs = self.find_songs(self.commit_msg)
         if songs is None:
             return

@@ -49,7 +49,7 @@ class twitter:
 
     def make_tweet_msg(self, song):
         print(song)
-        return f"New Ranked Song! {song['Title']}, {song['Star Difficulty']}★ , PP:{song['PP']} https://beatsaver.com/beatmap/{song['Key']} #NewRankedSong"
+        return f"New Ranked Song! {song['Title']}, {song['Star Difficulty']}★, PP:{song['PP']} https://beatsaver.com/beatmap/{song['Key']} #NewRankedSong"
 
     def notify(self):
         if 'updated' in self.commit_msg:

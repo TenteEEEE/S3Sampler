@@ -6,6 +6,9 @@ You can check the data from [ScoreSaberRankedSongDB](https://docs.google.com/spr
 You have a viewer permission only, but you can sort the data from filtering icon->"Make a temporary filtered view".  
 ![img](https://user-images.githubusercontent.com/9051681/88448983-39d9d600-ce7e-11ea-80b9-1068d3f518b0.png)
 
+## Twitter Bot (New Ranked Songs Notifier)
+See [Ranked Song Bot(@S3Sampler)](https://twitter.com/S3Sampler).  
+This bot tweets new ranked songs through [#NewRankedSong](https://twitter.com/search?q=%23NewRankedSong&src=typed_query) tag.
 
 ## Usage
 **Probably, you do not need to use it by yourself** because you can check the latest database(ranked song only) from [the above sheet](https://docs.google.com/spreadsheets/d/1NZpCVfejZgJBtrJL0AukMz4KODm_MKKEPhxN9CR34BE/edit?usp=sharing) or [here](./database/).

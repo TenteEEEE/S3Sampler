@@ -112,7 +112,7 @@ class scoresaber_scraper:
             info['Star Difficulty'] = info['Star Difficulty'][:-1]  # remove star icon
         else:  # unranked song
             info['Star Difficulty'] = '-'
-        info['ID'] = re.findall(r'ID: +[A-Z0-9]*', soup.text)[0][4:]
+        info['ID'] = re.findall(r'ID: +[A-Za-z0-9]*', soup.text)[0][4:]
         info['PP'] = re.findall(r'[0-9]+.[0-9]+pp', soup.text)[0][:-2]
         return title, info
 

@@ -47,7 +47,9 @@ class twitter:
         else:
             return None
 
-    def make_tweet_msg(self, song):
+    def make_song_tweet(self, name):
+        song = self.db[name][0]
+        song['Title'] = name
         print(song)
         return f"New Ranked Song! {song['Title']}, {song['Star Difficulty']}★, PP:{song['PP']} https://beatsaver.com/beatmap/{song['Key']} #NewRankedSong"
 
@@ -58,15 +60,15 @@ class twitter:
             if songs is None:
                 return
             for name in songs:
-                song = self.db[name][0]
-                song['Title'] = name
-                msg = self.make_tweet_msg(song)
+                msg = self.make_song_tweet(name)
                 self.tweet(msg)
 
 
 def setup():
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--debug', help='is_debug mode', action='store_true')
+    parser.add_argument('-m', '--manual', help='tweet a song manually', type=str)
+    parser.add_argument('-l', '--list', help='tweet using a song list', type=str)
     args = parser.parse_args()
     return args
 
@@ -75,7 +77,17 @@ def main(args):
     with open('secret.json', 'r') as f:
         secret = json.load(f)
     tw = twitter(secret, is_debug=args.debug)
-    tw.notify()
+    if args.manual is not None:
+        msg = tw.make_song_tweet(args.manual)
+        tw.tweet(msg)
+    elif args.list is not None:
+        with open(args.list, 'r') as f:
+            songs = f.readlines()
+        for s in songs:
+            msg = tw.make_song_tweet(s[:-1])
+            tw.tweet(msg)
+    else:
+        tw.notify()
 
 
 if __name__ == '__main__':

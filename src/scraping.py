@@ -223,6 +223,8 @@ def main():
         try:
             with open('./database/newsongs', 'w') as f:
                 f.write(', '.join(new_songs))
+            with open('./database/newsongs4tw', 'w') as f:
+                f.write('\n'.join(new_songs))
         except:
             pass
     else:

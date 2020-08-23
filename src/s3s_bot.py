@@ -84,7 +84,7 @@ def main(args):
         with open(args.list, 'r') as f:
             songs = f.readlines()
         for s in songs:
-            msg = tw.make_song_tweet(s[:-1])
+            msg = tw.make_song_tweet(s.rstrip("\n"))
             tw.tweet(msg)
     else:
         tw.notify()

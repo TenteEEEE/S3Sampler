@@ -44,6 +44,7 @@ class scoresaber_scraper:
         soup = self.cook_songlist_page()
         links = self.extract_links(soup)
         self.pages = self.find_num_pages(links)
+        self.maxretry = 3
 
     def __del__(self):
         self.driver.quit()
@@ -71,14 +72,22 @@ class scoresaber_scraper:
         update_button = self.driver.find_element_by_xpath("//button[@onclick='onToggle2()']")
         update_button.click()
         time.sleep(5)
-        # time.sleep(self.intervalf())
-        soup = BeautifulSoup(self.driver.page_source, 'html.parser')
+        soup = None
+        counter = 0
+        while soup is None and counter < self.maxretry:
+            soup = BeautifulSoup(self.driver.page_source, 'html.parser')
+            time.sleep(self.intervalf())
+            counter += 1
         return soup
 
     def cook_song_page(self, leaderboard):
         res = requests.get(self.baseurl + leaderboard)
-        soup = BeautifulSoup(res.text, 'html.parser')
-        time.sleep(self.intervalf())
+        soup = None
+        counter = 0
+        while soup is None and counter < self.maxretry:
+            soup = BeautifulSoup(res.text, 'html.parser')
+            time.sleep(self.intervalf())
+            counter += 1
         return soup
 
     def extract_links(self, soup):
@@ -120,9 +129,8 @@ class scoresaber_scraper:
         properties = ['Key', 'Downloads', 'Upvotes', 'Downvotes', 'Rating', 'Duration']
         info = dict.fromkeys(properties)
         monos = []
-        maxretry = 3
         counter = 0
-        while len(monos) < 1 and counter < maxretry:  # sometimes it fails so
+        while len(monos) < 1 and counter < self.maxretry:  # sometimes it fails so
             self.driver.get(f'https://beatsaver.com/search?q={id}')
             time.sleep(self.intervalf())
             soup = BeautifulSoup(self.driver.page_source, 'html.parser')

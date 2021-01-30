@@ -41,10 +41,10 @@ class scoresaber_scraper:
             interval = 5
         self.interval = interval
         self.intervalf = lambda: np.random.poisson(self.interval - 1.5) + np.random.rand() + 1  # like human access
+        self.maxretry = 3
         soup = self.cook_songlist_page()
         links = self.extract_links(soup)
         self.pages = self.find_num_pages(links)
-        self.maxretry = 3
 
     def __del__(self):
         self.driver.quit()

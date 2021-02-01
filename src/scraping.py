@@ -42,8 +42,7 @@ class scoresaber_scraper:
         self.interval = interval
         self.intervalf = lambda: np.random.poisson(self.interval - 1.5) + np.random.rand() + 1  # like human access
         self.maxretry = 3
-        soup = self.cook_songlist_page()
-        links = self.extract_links(soup)
+        links, leaderboards = self.cook_songlist_page()
         self.pages = self.find_num_pages(links)
 
     def __del__(self):
@@ -78,7 +77,12 @@ class scoresaber_scraper:
             soup = BeautifulSoup(self.driver.page_source, 'html.parser')
             time.sleep(self.intervalf())
             counter += 1
-        return soup
+            try:
+                links = self.extract_links(soup)
+                leaderboards = self.find_leaderborads(links)
+            except:
+                soup = None
+        return links, leaderboards
 
     def cook_song_page(self, leaderboard):
         res = requests.get(self.baseurl + leaderboard)
@@ -88,7 +92,11 @@ class scoresaber_scraper:
             soup = BeautifulSoup(res.text, 'html.parser')
             time.sleep(self.intervalf())
             counter += 1
-        return soup
+            try:
+                title, info = self.find_song_info(soup)
+            except:
+                soup = None
+        return title, info
 
     def extract_links(self, soup):
         links = [url.get('href') for url in soup.find_all('a')]
@@ -171,12 +179,9 @@ class scoresaber_scraper:
             itr = range(self.previous, self.pages)
         for pageindex in itr:  # scrape from scoresaber
             print(f'Scraping Page: {pageindex+1:03}/{self.pages:03}')
-            soup = self.cook_songlist_page(pageindex)
-            links = self.extract_links(soup)
-            leaderboards = self.find_leaderborads(links)
+            links, leaderboards = self.cook_songlist_page(pageindex)
             for song in tqdm(leaderboards):
-                soup = self.cook_song_page(song)
-                title, info = self.find_song_info(soup)
+                title, info = self.cook_song_page(song)
                 if title in self.song_database.keys():
                     self.song_database[title].append(info)
                 else:

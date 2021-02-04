@@ -31,9 +31,10 @@ class scoresaber_scraper:
         self.previous = 0
         if self.restart:
             try:
-                with open('./tmp/' + os.listdir('tmp')[0]) as f:
+                fname = sorted(os.listdir('tmp'))[0]
+                with open('./tmp/' + fname) as f:
                     self.song_database = json.load(f)
-                self.previous = int(os.listdir('tmp')[0][:4])
+                self.previous = int(fname[:4])
             except:
                 self.song_database = {}
         if interval <= 1.5:

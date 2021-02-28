@@ -63,8 +63,9 @@ class scoresaber_scraper:
                 ranked.click()  # Enalbe ranked option
         cats = self.driver.find_element_by_xpath("//select[@id='cats']")
         cats = Select(cats)
-        cats.select_by_visible_text("Star Difficulty")
+        cats.select_by_visible_text("Date Ranked")
         time.sleep(5)
+        self.driver.find_element_by_xpath(".//input[@type='radio' and @id='asc']").click()
         maxstar = self.driver.find_element_by_xpath("//input[@id='sliderWithValue']")
         # maxstar.send_keys("50")
         starmove = ActionChains(self.driver)

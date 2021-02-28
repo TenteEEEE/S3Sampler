@@ -8,4 +8,5 @@ __pycache__
 !database/*.json
 database/newsongs
 update.sh
+restart.sh
 tmp

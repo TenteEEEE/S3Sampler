@@ -82,6 +82,8 @@ class scoresaber_scraper:
             try:
                 links = self.extract_links(soup)
                 leaderboards = self.find_leaderborads(links)
+                if len(leaderboards) == 0:
+                    soup = None
             except:
                 soup = None
         return links, leaderboards

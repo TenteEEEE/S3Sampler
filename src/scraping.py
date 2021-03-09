@@ -84,6 +84,7 @@ class scoresaber_scraper:
                 leaderboards = self.find_leaderborads(links)
                 if len(leaderboards) == 0:
                     soup = None
+                    leaderboards = None
             except:
                 soup = None
         return links, leaderboards
@@ -175,6 +176,8 @@ class scoresaber_scraper:
         return songdf
 
     def scrape(self, pagerange=None):
+        with open(f'./tmp/{0:04}.json', 'w') as f:  # store temporary database
+            json.dump(None, f)
         if self.restart is False:
             self.song_database = {}
         if pagerange is not None:

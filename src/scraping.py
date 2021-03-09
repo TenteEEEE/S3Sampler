@@ -176,8 +176,6 @@ class scoresaber_scraper:
         return songdf
 
     def scrape(self, pagerange=None):
-        with open(f'./tmp/{0:04}.json', 'w') as f:  # store temporary database
-            json.dump(None, f)
         if self.restart is False:
             self.song_database = {}
         if pagerange is not None:

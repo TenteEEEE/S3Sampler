@@ -19,13 +19,17 @@ class scoresaber_scraper:
         self.baseurl = 'https://scoresaber.com'
         options = webdriver.ChromeOptions()
         options.add_argument('--window-size=640,480')
+        options.add_experimental_option("excludeSwitches", ["enable-logging"])
         if headless:
             options.add_argument('--headless')
         if os.name != 'nt':
             # On Linux case, you may need to install chromedriver manually
             self.driver = webdriver.Chrome('/usr/local/bin/chromedriver', options=options)
         else:
-            self.driver = webdriver.Chrome(options=options)
+            try:
+                self.driver = webdriver.Chrome(options=options)
+            except:
+                self.driver = webdriver.Chrome('C:/Program Files/chromedriver_win32/chromedriver', options=options)
         self.unranked = unranked
         self.restart = restart
         self.previous = 0
@@ -138,31 +142,34 @@ class scoresaber_scraper:
         info['PP'] = re.findall(r'[0-9]+.[0-9]+pp', soup.text)[0][:-2]
         return title, info
 
-    def find_beatsaver_info(self, id):
-        properties = ['Key', 'Downloads', 'Upvotes', 'Downvotes', 'Rating', 'Duration']
-        info = dict.fromkeys(properties)
-        monos = []
-        counter = 0
-        while len(monos) < 1 and counter < self.maxretry:  # sometimes it fails so
-            self.driver.get(f'https://beatsaver.com/search?q={id}')
-            time.sleep(self.intervalf())
-            soup = BeautifulSoup(self.driver.page_source, 'html.parser')
-            monos = soup.findAll('li', attrs={'class': 'mono'})
-            counter += 1
+    def find_beatsaver_info(self, title):
+        self.driver.get(f'https://beatsaver.com/?q={title}&ranked=true')
+        time.sleep(self.intervalf() / 2)
+        soup = BeautifulSoup(self.driver.page_source, 'html.parser')
         try:
-            del monos[1]  # remove mapper because we already know it from scoresaber
+            song_key = soup.findAll('div', attrs={'class': 'info'})[0].find_all('a')[0].get('href').split('/')[-1]
         except:
-            print(f'Error ID:{id}')
-            return info
-        monos = [m.text[:-2] for m in monos]
-        monos = {properties[i]: monos[i] for i in range(len(monos))}
-        info.update(monos)
-        info['Key'] = str(info['Key'])
-        return info
+            return None
+
+        self.driver.get(f'https://beatsaver.com/maps/{song_key}')
+        time.sleep(self.intervalf() / 2)
+        soup = BeautifulSoup(self.driver.page_source, 'html.parser')
+        ranks = soup.findAll('div', attrs={'class': 'list-group mapstats'})[0].get_text(' ').split(' ')
+        ranks = [r for r in ranks if r in ['Expert+', 'Expert', 'Hard', 'Normal', 'Easy']]
+        details = soup.findAll('div', attrs={'class': 'stats'})
+        # tags = ['Stars', 'Notes', 'Bombs', 'Walls', 'Note jump speed', 'Notes per second', 'Lights']
+        tags = ['Bombs', 'Walls', 'Note jump speed', 'Notes per second', 'Lights']
+        info = {}
+        for rank, detail in zip(ranks, details):
+            detail = detail.get_text(' ').split(' ')[2:] # remove stars and notes since we already know that
+            if 'k' in detail[-1]:
+                detail[-1] = float(detail[-1][:-1]) * 1000
+            info[rank] = dict(zip(tags, detail))
+        return song_key, info
 
     def to_dataframe(self):
         properties = ['Title', 'Mapped by', 'Level', 'Status', 'Scores', 'Total Scores', 'Star Difficulty',
-                      'Note Count', 'BPM', 'PP', 'Key', 'Downloads', 'Upvotes', 'Downvotes', 'Rating', 'Duration', 'ID']
+                      'Note Count', 'BPM', 'PP', 'Key', 'Bombs', 'Walls', 'Note jump speed', 'Notes per second', 'Lights', 'ID']
         db = self.song_database  # copy
         songdf = pd.DataFrame(columns=properties)
         for title in db.keys():
@@ -200,10 +207,20 @@ class scoresaber_scraper:
         print('Scraping additional information from Beatsaver...')
         for title in tqdm(self.song_database.keys()):  # scrape from beatsaver
             song = self.song_database[title]
-            id = song[0]['ID']
-            saver_info = self.find_beatsaver_info(id)
-            for s in song:
-                s.update(saver_info)
+            try:
+                key, info = self.find_beatsaver_info(title)
+            except:
+                key = None
+            if key is not None:
+                for s in song:
+                    s.update({'Key': key})
+                    try:
+                        s.update(info[s['Level']])
+                    except:
+                        pass
+            else:
+                for s in song:
+                    s.update({'Key': None})
 
 
 def setup():

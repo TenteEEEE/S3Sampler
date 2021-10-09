@@ -74,7 +74,7 @@ class scoresaber_scraper:
         # maxstar.send_keys("50")
         starmove = ActionChains(self.driver)
         starmove.click_and_hold(maxstar).move_by_offset(300, 0).release().perform()
-        update_button = self.driver.find_element_by_xpath("//button[@onclick='onToggle2()']")
+        update_button = self.driver.find_element_by_xpath("//button[@onclick='if (!window.__cfRLUnblockHandlers) return false; onToggle2()']")
         update_button.click()
         time.sleep(5)
         soup = None
